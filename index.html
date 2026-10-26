@@ -84,6 +84,17 @@ td,th{padding:8px;border-bottom:1px solid var(--line);text-align:left}
 footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:50}
 .toast.show{opacity:1}
+.dlhelp{background:var(--good-soft);border-radius:10px;padding:12px 14px;margin-top:12px;font-size:.9rem}
+.dlhelp ul{margin:6px 0;padding-left:20px}
+.dlhelp a{color:var(--ink);font-weight:700}
+.order{margin:8px 0 0;padding-left:0;list-style:none;counter-reset:o;display:grid;gap:8px}
+.order li{counter-increment:o;display:grid;grid-template-columns:34px 1fr;gap:2px 10px;background:var(--sun-soft);border-radius:10px;padding:10px 12px}
+.order li::before{content:counter(o);grid-row:span 2;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.order li span{color:var(--muted);font-size:.9rem;grid-column:2}
+.order li:nth-child(4){background:var(--rec-soft)}
+.strip{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.strip span{font-size:.8rem;font-weight:700;padding:5px 10px;border-radius:999px;background:#eef1f7}
+.strip .idstep{background:var(--rec-soft);color:#9b1c1f}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:40}
 @media print{header,.steps,.actions,footer,.noprint{display:none!important}body{background:#fff}.card{border:1px solid #ccc;break-inside:avoid}}
 </style>
@@ -114,12 +125,16 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
       <div><label for="limit">Recording time limit</label>
         <select id="limit"><option value="60">1 minute</option><option value="90" selected>1.5 minutes</option><option value="120">2 minutes</option></select></div>
     </div>
-    <div class="tips">
-      <div class="tip"><b>👋 Greet &amp; name</b>Say hello and your full name.</div>
-      <div class="tip"><b>🎓 Who you are</b>Your programme and what you study.</div>
-      <div class="tip"><b>🎯 Purpose</b>Say what your video is about.</div>
-      <div class="tip"><b>👀 Look at the lens</b>Short glances at your script are OK.</div>
-    </div>
+    <h3 style="font-family:var(--display);margin:18px 0 4px">Your introduction: say it in this order</h3>
+    <p class="ar" style="margin:0">قدّم نفسك بهذا الترتيب</p>
+    <ol class="order">
+      <li><b>👋 Greeting</b><span>"Hello, everyone." / "Good morning."</span></li>
+      <li><b>🙋 Full name</b><span>"My name is Mariam Ali Al Mansoori."</span></li>
+      <li><b>🎓 Programme</b><span>"I am studying … at HCT."</span></li>
+      <li><b>🪪 ID card</b><span>Hold your HCT ID card next to your face for 3 seconds so your teacher can verify you.</span></li>
+      <li><b>🎯 What the video is about</b><span>"In this video, I will talk about …"</span></li>
+    </ol>
+    <div class="tip" style="margin-top:10px"><b>👀 Look at the lens</b>Short glances at your script are OK.</div>
     <div class="actions"><button class="btn" id="go1">Start recording step →</button></div>
   </section>
 
@@ -136,15 +151,25 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
       <div class="badge-rec" id="recbadge" hidden><i></i><span id="clock">0:00</span></div>
     </div>
     <div class="bar"><div id="prog"></div></div>
+    <div class="strip" aria-label="Introduction order"><span>1 Greeting</span><span>2 Full name</span><span>3 Programme</span><span class="idstep">4 🪪 Show ID</span><span>5 Video topic</span></div>
     <div id="camErr" class="err" hidden></div>
     <div class="actions">
       <button class="btn" id="camOn">📷 Turn on camera</button>
       <button class="btn-rec" id="recBtn" disabled>● Record</button>
       <button class="btn-ghost" id="stopBtn" disabled>■ Stop</button>
       <button class="btn-ghost" id="redo" hidden>↺ Record again</button>
-      <button class="btn-ghost" id="dlVid" hidden>⬇ Download video</button>
+      <button class="btn-sun" id="dlVid" hidden>⬇ Download video</button>
     </div>
-    <p class="noprint" style="color:var(--muted);font-size:.88rem">Keep your face inside the yellow guide. The video stays on this device only. Download it if you want to keep it.</p>
+    <div class="dlhelp noprint" hidden>
+      <b>⬇ Saved as <span class="dlfile"></span></b>
+      <ul>
+        <li><b>Laptop:</b> check your <i>Downloads</i> folder.</li>
+        <li><b>iPhone / iPad:</b> in the share menu tap <i>Save Video</i> (Photos) or <i>Save to Files</i>.</li>
+        <li><b>Android:</b> check <i>Gallery</i> or <i>Files › Downloads</i>.</li>
+      </ul>
+      Didn't work? <a class="dllink" href="#" target="_blank">Open the video here</a>, then use the ⋮ menu or long-press to save it.
+    </div>
+    <p class="noprint" style="color:var(--muted);font-size:.88rem">Keep your face inside the yellow guide. At step 4, hold your ID card beside your face, close to the camera, and keep it still for 3 seconds. The video stays on this device only. Download it if you want to keep it.</p>
     <div class="actions"><button class="btn-ghost" id="back2">← Back</button><button class="btn" id="go2" disabled>Partner gives feedback →</button></div>
   </section>
 
@@ -187,10 +212,19 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
       <div class="actions">
         <button class="btn-sun" id="print">🖨 Print / Save as PDF</button>
         <button class="btn-ghost" id="saveJson">💾 Save feedback (JSON)</button>
-        <button class="btn-ghost" id="dlVid2">⬇ Download video</button>
+        <button class="btn-sun" id="dlVid2">⬇ Download video</button>
         <button class="btn-rec" id="swap">⇄ Swap roles</button>
         <button class="btn-ghost" id="newPair">New pair</button>
       </div>
+      <div class="dlhelp noprint" hidden>
+      <b>⬇ Saved as <span class="dlfile"></span></b>
+      <ul>
+        <li><b>Laptop:</b> check your <i>Downloads</i> folder.</li>
+        <li><b>iPhone / iPad:</b> in the share menu tap <i>Save Video</i> (Photos) or <i>Save to Files</i>.</li>
+        <li><b>Android:</b> check <i>Gallery</i> or <i>Files › Downloads</i>.</li>
+      </ul>
+      Didn't work? <a class="dllink" href="#" target="_blank">Open the video here</a>, then use the ⋮ menu or long-press to save it.
+    </div>
     </div>
   </section>
 
@@ -207,6 +241,9 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
       <div><b>strength</b><span class="ar">نقطة قوة</span></div>
       <div><b>improve</b><span class="ar">يحسّن</span></div>
       <div><b>framing</b><span class="ar">تأطير الصورة</span></div>
+      <div><b>ID card</b><span class="ar">بطاقة الهوية</span></div>
+      <div><b>verify / verification</b><span class="ar">يتحقق / التحقق</span></div>
+      <div><b>programme</b><span class="ar">البرنامج الدراسي</span></div>
     </div>
   </section>
 </main>
@@ -216,9 +253,12 @@ footer{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
 <script>
 const $=id=>document.getElementById(id);
 const CRITS=[
-  {k:"greet",t:"Greeting & name",d:"Says hello and their full name"},
-  {k:"info",t:"Personal information",d:"Programme, studies or background"},
-  {k:"purpose",t:"Purpose of the video",d:"Explains what the video is about"},
+  {k:"greet",t:"1. Greeting",d:"Starts with a polite greeting"},
+  {k:"name",t:"2. Full name",d:"Says their full name clearly"},
+  {k:"info",t:"3. Programme",d:"Says what they study at HCT"},
+  {k:"id",t:"4. ID card shown",d:"ID is close, still and readable for about 3 seconds"},
+  {k:"purpose",t:"5. What the video is about",d:"Clearly explains the topic of the video"},
+  {k:"order",t:"Correct order",d:"Follows steps 1–5 in order"},
   {k:"eye",t:"Eye contact",d:"Looks at the camera, not only the script"},
   {k:"voice",t:"Voice: volume & clarity",d:"Loud enough, words are clear"},
   {k:"pace",t:"Pace",d:"Not too fast, natural pauses"},
@@ -275,11 +315,12 @@ $("recBtn").onclick=()=>{
     if(s>=lim)stopRec();
   },200);
 };
-function stopRec(){if(recorder&&recorder.state!=="inactive")recorder.stop();clearInterval(timer)}
+function stopRec(){clearInterval(timer);if(recorder&&recorder.state!=="inactive"){try{recorder.requestData()}catch(e){}recorder.stop()}}
 $("stopBtn").onclick=stopRec;
 function finish(){
   state.duration=Math.round((Date.now()-startT)/1000);
   blob=new Blob(chunks,{type:recorder.mimeType||mime||"video/webm"});
+  if(!blob.size){showErr("The recording was empty. Please record again (speak for at least a few seconds).");$("redo").hidden=false;$("recbadge").hidden=true;$("stopBtn").disabled=true;if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}return}
   if(blobUrl)URL.revokeObjectURL(blobUrl);
   blobUrl=URL.createObjectURL(blob);
   const p=$("playback");p.src=blobUrl;p.hidden=false;$("live").hidden=true;$("guide").hidden=true;
@@ -303,7 +344,7 @@ async function dlVideo(){
       const file=new File([blob],fname,{type:blob.type.split(";")[0]});
       if(navigator.canShare({files:[file]})){
         await navigator.share({files:[file],title:"My trial introduction"});
-        toast("Choose Save Video to keep it");showDlHelp(fname);return;
+        toast("Choose Save Video to keep it");state.downloaded=true;showDlHelp(fname);return;
       }
     }catch(e){if(e.name==="AbortError")return}
   }
@@ -403,16 +444,20 @@ $("saveJson").onclick=()=>{
 function resetRound(){
   state.ratings={};state.marks=[];state.recorded=false;state.fbDone=false;state.duration=0;
   ["star1","star2","wish","reflect"].forEach(id=>$(id).value="");
-  blob=null;$("playback").hidden=true;$("playback").removeAttribute("src");$("live").hidden=false;
+  blob=null;state.downloaded=false;document.querySelectorAll(".dlhelp").forEach(b=>b.hidden=true);$("camErr").hidden=true;$("playback").hidden=true;$("playback").removeAttribute("src");$("live").hidden=false;
   $("ph").hidden=false;$("guide").hidden=true;$("camOn").disabled=false;$("recBtn").disabled=true;
   $("redo").hidden=true;$("dlVid").hidden=true;$("go2").disabled=true;$("prog").style.width="0";$("clock").textContent="0:00";
 }
 $("swap").onclick=()=>{
+  if(blob&&!state.downloaded&&!state.swapWarned){state.swapWarned=true;toast("Download the video first — tap Swap again to continue");return}
+  state.swapWarned=false;
   const s=$("speaker").value;$("speaker").value=$("partner").value;$("partner").value=s;
   resetRound();$("spk2").textContent=name("speaker");$("prt2").textContent=name("partner");
   toast("Roles swapped: "+name("speaker")+" speaks now");go(2);
 };
-$("newPair").onclick=()=>{resetRound();$("speaker").value="";$("partner").value="";state.points=0;$("pts").textContent="0 pts";go(1)};
+$("newPair").onclick=()=>{
+  if(blob&&!state.downloaded&&!state.newWarned){state.newWarned=true;toast("Download the video first — tap New pair again to continue");return}
+  state.newWarned=false;resetRound();$("speaker").value="";$("partner").value="";state.points=0;$("pts").textContent="0 pts";go(1)};
 
 /* confetti */
 function confetti(){
